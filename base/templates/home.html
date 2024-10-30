@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Chart.js CDN -->
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+   
+    <style>
+        .loading-spinner{
+            display : none;
+        }
+
+        .htmx-request .loading-spinner{
+            display: inline;
+        }
+    
+    </style>
+</head>
+<body  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' >
+     
+    <h1>Hello World</h1>
+    
+      
+    <button class="btn bg-red-300" hx-post="/graph/"
+            hx-target="#graph"
+            hx-trigger="load delay:2s"
+            hx-swap="outerHTML"
+            hx-indicator="#loader"
+    >
+    Load graph
+   
+    </button>
+   
+    <div>
+        <canvas id="myChart"></canvas>
+      </div>
+      
+      
+      
+
+
+      
+      
+      
+    <div id="graph"> <img class="htmx-indicator" id="loader" src="{% static "loader.gif" %}" ></div>
+</body>
+</html>

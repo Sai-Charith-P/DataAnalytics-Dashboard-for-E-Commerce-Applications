@@ -1,0 +1,33 @@
+
+<p class="text-2xl font-bold text-white">Total insights: {{ total_articles }}</p>
+
+<canvas id="myBarChart" width="400" height="400"></canvas>
+
+<script>
+
+    var ctxBar = document.getElementById('myBarChart').getContext('2d');
+    var myBarChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: {{ labels|safe }},  
+            datasets: [{
+                label: 'PESTLE Distribution',
+                data: {{ values|safe }},  
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

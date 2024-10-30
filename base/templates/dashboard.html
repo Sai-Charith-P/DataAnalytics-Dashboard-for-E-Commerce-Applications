@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Dashboard</title>
+    <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <div class="flex flex-col h-screen bg-gray-900 p-8 " hx-post="/data-table/" hx-trigger="load" hx-target="#table-data">
+
+    <div class="container mx-auto p-4">
+
+
+        <h1 class="center text-3xl font-bold mb-6">Interactive Data Dashboard</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+            <div class="bg-gray-800 p-4 rounded">
+                <h2 class="text-xl font-bold mb-4">Sector Combinations</h2>
+                <form class="mb-4">
+                    <div class="flex items-center">
+                        
+                        <label for="country" class="mr-2">Select Country:</label>
+                        <select id="country" name="country" class="border rounded px-3 py-1 text-black">
+                            <option class="text-black" value="@">all</option>
+                            {% for distinct_country in distinct_countries_list %}
+                            <option class="text-black" value="{{ distinct_country }}">{{ distinct_country }}</option>
+                            {% endfor %}
+
+                            
+                        </select>
+                        <button type="submit" hx-post="/sector-pie-filter/" hx-target="#sector-pie" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 ml-2 rounded">
+                            Apply Filters
+                        </button>
+                    </div>
+                </form>
+
+                
+                <div class="">
+                    <p class="text-center text-gray-400" hx-post="/sector-pie/" hx-trigger="load"  hx-target="#sector-pie"></p>
+                    <div  id="sector-pie" ></div>
+                </div>
+                
+
+    
+            </div>
+
+
+            
+
+
+
+
+            <div class="bg-gray-800 p-4 rounded">
+                <h2 class="text-xl font-bold mb-4">Pestle Distribution</h2>
+                
+
+                <div class="">
+                    <p class="text-center text-gray-400" hx-post="/pestle-bar/" hx-trigger="load"  hx-target="#pestle-bar"></p>
+                    <div  id="pestle-bar" ></div>
+                </div>
+                
+
+    
+            </div>
+
+
+            
+
+   
+            
+        </div>
+
+        <!-- Chart 3 -->
+        <div class="bg-gray-800 p-4 rounded">
+            
+        </div>   
+
+
+            <h2 class="text-xl font-bold mb-4">Intensity of a pestle over years</h2>
+
+        
+            
+
+
+
+            <div class="h-screen flex justify-center items-center">
+                <div class="max-w-screen-lg w-full  p-8 rounded-lg shadow-lg">
+                    <p class="text-center text-gray-400 mb-4" hx-post="/intensity-line/" hx-trigger="load" hx-target="#intensity-line"></p>
+                    <div id="intensity-line"></div>
+                </div>
+            </div>
+            
+            
+           
+        </div>
+
+
+            <h2 class="text-xl font-bold mb-4">View Intensity </h2>
+            <form class="flex flex-col items-center space-y-4 mb-4 w-full max-w-lg mx-auto" hx-post="/data-table-filter/" hx-target="#table-data">
+                <div class="w-full">
+                    <label for="country_name" class="block text-gray-400 mb-1">Select Country</label>
+                    <select id="country_name" name="country_name" class="block w-full rounded-md bg-gray-800 text-gray-400 border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        <option value="@">All</option>
+                        {% for distinct_country in distinct_countries_list %}
+                            <option value="{{ distinct_country }}">{{ distinct_country }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="w-full">
+                    <label for="sector_name" class="block text-gray-400 mb-1">Select Sector</label>
+                    <select id="sector_name" name="sector_name" class="block w-full rounded-md bg-gray-800 text-gray-400 border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        <option value="@">All</option>
+                        {% for sector in sectors %}
+                            <option value="{{ sector }}">{{ sector }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    Apply Filters
+                </button>
+            </form>
+            
+            <div class="flex-1">
+                <div class="overflow-x-auto" >
+                <div id="table-data"></div>
+                </div>
+                
+            </div>
+        </div>
+        
+
+      
+
+
+
+
+    </div>
+
+</body>
+</html>
